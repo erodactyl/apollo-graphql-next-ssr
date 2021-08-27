@@ -1,16 +1,9 @@
 import { useRef } from "react";
 import type { AppProps } from "next/app";
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  useQuery,
-  gql,
-  NormalizedCacheObject,
-} from "@apollo/client";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 export const client = new ApolloClient({
-  uri: "https://48p1r2roz4.sse.codesandbox.io",
+  uri: "https://48p1r2roz4.sse.codesandbox.io/",
   cache: new InMemoryCache(),
 });
 

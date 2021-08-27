@@ -1,0 +1,9 @@
+overwrite: true
+schema: "https://48p1r2roz4.sse.codesandbox.io/"
+documents: "./src/graphql/**/*.graphql"
+generates:
+  src/graphql/graphql.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
