@@ -43,8 +43,8 @@ const Currency: NextPage<Props> = ({ variables, initialData }) => {
 export async function getServerSideProps({
   params,
 }: GetServerSidePropsContext) {
-  const variables = { currency: params!.currencyName };
-  const rates = await mainClient.query<GetRatesQuery>({
+  const variables = { currency: params!.currencyName as string };
+  const rates = await mainClient.query<GetRatesQuery, GetRatesQueryVariables>({
     query: GetRatesDocument,
     variables,
   });

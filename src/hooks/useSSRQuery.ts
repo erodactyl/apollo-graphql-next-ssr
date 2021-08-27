@@ -1,29 +1,28 @@
-import { useRef } from "react";
-import * as Apollo from '@apollo/client';
+import { useRef } from 'react';
 import {
   useQuery,
+  useApolloClient,
   DocumentNode,
   QueryResult,
-  useApolloClient,
-} from "@apollo/client";
+  QueryHookOptions,
+  TypedDocumentNode,
+} from '@apollo/client';
 
-interface IOptions<Q, V> extends Apollo.QueryHookOptions<Q, V> {
-  initialData?: QueryResult<Q, V>["data"];
+interface IOptions<Q, V> extends QueryHookOptions<Q, V> {
+  initialData?: QueryResult<Q, V>['data'];
 }
 
 function useSSRQuery<Query, Variables>(
-  query: DocumentNode,
-  options: IOptions<Query, Variables> = {}
-): Apollo.QueryResult<Query, Variables> {
+  query: DocumentNode | TypedDocumentNode<Query, Variables>,
+  options: IOptions<Query, Variables> = {},
+): QueryResult<Query, Variables> {
   const { initialData, ...restOptions } = options;
 
   const client = useApolloClient();
   const alreadyWrittenRef = useRef<boolean | null>(null);
   addDataToCache();
 
-  const res = useQuery<Query, Variables>(query, restOptions);
-
-  return res;
+  return useQuery<Query, Variables>(query, restOptions);
 
   function addDataToCache() {
     /** Add initial data to cache only if it doens't already exist */
@@ -44,7 +43,7 @@ function useSSRQuery<Query, Variables>(
    */
   function getAlreadyWritten() {
     if (alreadyWrittenRef.current === null) {
-      const existingData = client.readQuery<Query>({
+      const existingData = client.readQuery<Query, Variables>({
         query,
         variables: options.variables,
       });
